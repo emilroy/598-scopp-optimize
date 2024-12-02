@@ -30,17 +30,17 @@ for i in range(1):
         print("Velocity", environment.robot_velocity)
         algorithm_settings = QLBSet.algorithm()
     else:
-        environment = envs.SmallLafayetteFLood()
+        environment = envs.MediumLafayetteFLood(UAV=0)
         print("Field of view:", environment.robot_FOV)
         print("Operating height:", environment.robot_operating_height)
         print("Velocity:", environment.robot_velocity)
         print("Robot starting positions:", environment.starting_position)
-        algorithm_settings = QLBSet.algorithm(planner="nn", sampling_rate=1/5)
+        algorithm_settings = QLBSet.algorithm(planner="nn", sampling_rate=1/10)
         plot_settings = QLBSet.plots()
 
-    # number_of_robots = [5, 10, 20, 30, 40, 50, 75, 100, 125, 150]
-    number_of_robots = [100]
-    # number_of_robots = [40]
+    number_of_robots = [5, 10, 20, 30, 40, 50, 75, 100, 125, 150]
+    number_of_robots = [5, 20]
+    number_of_robots = [40]
 
     total_computation_time = [[] for run in number_of_robots]
     no_path_planning_time = [[] for run in number_of_robots]
@@ -99,7 +99,6 @@ for i in range(1):
                 np.save(environment.save_path + "area_coverage.npy", way_point_allocator.area_covered_over_time)
                 tasks_data.to_pickle(environment.save_path + "tasks_data.pkl")
                 time_per_data.to_pickle(environment.save_path + "time_per_data.pkl")
-        print("Total mission completion time:", way_point_allocator.data_total_mission_completion_time)
 
     else:
         if len(number_of_robots) > 1:
@@ -157,7 +156,6 @@ for i in range(1):
         hspace = 0.4  # the amount of height reserved for space between subplots,
         # expressed as a fraction of the average axis height
         plt.subplots_adjust(left, bottom, right, top, wspace, hspace)
-        print("Total mission completion time:", way_point_allocator.data_total_mission_completion_time)
 
     else:
         print("END DATA:")
@@ -205,7 +203,7 @@ for i in range(1):
                 way_point_allocator.time_for_partitioning / way_point_allocator.total_time)
         print(max(total_completion_time))
         completion_times.append(max(total_completion_time))
-    np.save("100_completion_times_13_robots", completion_times)
+    # np.save("100_completion_times_13_robots", completion_times)
     # mng = plt.get_current_fig_manager()
     # mng.resize(*mng.window.maxsize())
     # mng = plt.get_current_fig_manager()
