@@ -33,7 +33,7 @@ class Debugger:
         self.robot_FOV = 150  # degrees
         self.robot_operating_height = 2  # meters
         self.robot_velocity = 10  # meters per second
-        self.save_path = "Debug/"
+        self.save_path = "Debugger/"
 
 
 class VeryLargeLafayetteFLood:
