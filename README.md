@@ -36,18 +36,18 @@ One can change the environment to be any found in the environments file created 
 
 
 ## Simulations of robots over flood maps:
-<div style="display: flex; justify-content: space-around; gap: 20px;">
-  <figure style="text-align: center;">
+<div style="justify-content: space-around; gap: 20px;">
+  <figure>
     <img src="SmallLafayetteFlood/coverage.gif" alt="Small Lafayette Simulation" width="300">
     <figcaption>Small Lafayette Flood Map</figcaption>
   </figure>
 
-  <figure style="text-align: center;">
+  <figure>
     <img src="MediumLafayetteFlood/coverage.gif" alt="Medium Lafayette Simulation" width="300">
     <figcaption>Medium Lafayette Flood Map</figcaption>
   </figure>
 
-  <figure style="text-align: center;">
+  <figure>
     <img src="LargeLafayetteFlood/coverage.gif" alt="Large Lafayette Simulation" width="300">
     <figcaption>Large Lafayette Flood Map.</figcaption>
   </figure>
