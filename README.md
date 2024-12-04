@@ -32,7 +32,7 @@ To run the algorithm on a chosen environment found in `environments.py`, run
 ```
 python main.py
 ```
-One can change the environment to be any found in the environments file created by the authors of the original paper.
+One can change the environment to be any found in the environments file created by the authors of the original paper. In `main.py` simply change the  environment variable in line 10.
 
 
 ## Simulations of robots over flood maps:
