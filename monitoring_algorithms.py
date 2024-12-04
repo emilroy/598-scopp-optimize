@@ -64,6 +64,8 @@ class QLB:
             self.number_of_partitions = len(environment.starting_position)
         else:
             self.number_of_partitions = number_of_robots
+            
+        #  self.create_png() # to help visualize environment
 
         # Initialize method variables
         self.initialize_method_variables()
@@ -85,6 +87,42 @@ class QLB:
 
         # Initialize other useful information
         self.initialize_other_information()
+    
+    def create_png(self):
+        # Create figure with white background
+        fig, ax = plt.subplots(figsize=(10, 8))
+        
+        # Plot boundary points
+        boundary_points = np.array(self.geographical_boundary_points)
+        ax.plot(boundary_points[:, 0], boundary_points[:, 1], 'b-', linewidth=2)
+        
+        # Plot geo-fencing holes
+        if self.geographical_geo_fencing_zones:
+            for hole in self.geographical_geo_fencing_zones:
+                hole_points = np.array(hole)
+                hole_points = np.vstack((hole_points, hole_points[0]))
+                ax.plot(hole_points[:, 0], hole_points[:, 1], 'r-', linewidth=2)
+        
+        # Close the boundary polygon
+        ax.plot([boundary_points[-1, 0], boundary_points[0, 0]], 
+                [boundary_points[-1, 1], boundary_points[0, 1]], 'b-', linewidth=2)
+        
+        # Remove all axes, grid, and background
+        ax.set_axis_off()
+        # plt.gca().set_position([0, 0, 1, 1])
+        
+        # Set background to white
+        fig.patch.set_facecolor('white')
+        ax.patch.set_facecolor('white')
+        
+        # Save with tight layout and no padding
+        plt.savefig(self.save_path + '/map.png', 
+                    dpi=300, 
+                    bbox_inches='tight',
+                    pad_inches=0,
+                    facecolor='white',
+                    edgecolor='none')
+        plt.close()
 
     def initialize_method_variables(self):
         self.cell_wall_interval = 3
@@ -246,24 +284,18 @@ class QLB:
 
     def calculate_multi_peak_potential(self, point):
         potential = 0
+        amplitude = 15  # Peak height
+        sigma = 15.0    # Peak width
         
-        # Add attractive potentials (valleys) at robot goals
-        k_att = 0.5  # Attractive constant
-        for i, goal in enumerate(self.cluster_centers):
-            dist = np.sqrt((point[0] - goal[0])**2 + (point[1] - goal[1])**2)
-            potential -= k_att * np.exp(-dist/50)  # Gaussian attractive potential
-        
-        # Add repulsive potentials (peaks) from obstacles
-        k_rep = 100  # Repulsive constant
+        # Get obstacles (geofencing holes) from existing method
         obstacles = self.get_obstacles()
-        for obstacle in obstacles:
-            for i in range(len(obstacle)):
-                p1 = obstacle[i]
-                p2 = obstacle[(i+1) % len(obstacle)]
-                closest = self.closest_point_on_segment(point, p1, p2)
-                dist = np.sqrt((point[0] - closest[0])**2 + (point[1] - closest[1])**2)
-                potential += k_rep * np.exp(-dist/20)  # Gaussian repulsive potential
         
+        # Calculate Gaussian peaks for each vertex of the obstacles
+        for obstacle in obstacles:
+            for vertex in obstacle:
+                dist_squared = (point[0] - vertex[0])**2 + (point[1] - vertex[1])**2
+                potential += amplitude * np.exp(-dist_squared/(2*sigma**2))
+                
         return potential
 
     def discretize_massive_area(self):
@@ -302,9 +334,6 @@ class QLB:
         return cell_boundary if len(cell_boundary) == 4 else None
 
     def partition_area(self, cell_space, cells):
-        """
-        Partitioning phase: divides surveyable area are into equally sized areas; one for each robot.
-        """
         cell_squares_within_boundary_x = cell_space[0]
         cell_squares_within_boundary_y = cell_space[1]
         cells_within_boundary_x = []
@@ -530,10 +559,6 @@ class QLB:
             return [0, 0]
     
     def get_obstacles(self):
-        """
-        Get obstacle positions from the environment.
-        This method needs to be implemented based on how obstacles are represented in your environment.
-        """
         obstacles = []
         if self.geographical_geo_fencing_zones_in_cartesian:
             for zone in self.geographical_geo_fencing_zones_in_cartesian:
