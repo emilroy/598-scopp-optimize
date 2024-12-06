@@ -37,3 +37,9 @@ One can change the environment to be any found in the environments file created 
 
 ## Simulations:
 In Python, to run the simulations, run the desired environment in `main.py`, then adjust the environment and number of robots in `tester.py` and run it, and finally adjust the enviornmet in `simulator.py`. Please note that the simulations in Python were not complete in the referenced repository, thus leading us to try our best to recreate maps that weren't provided which can lead to not the best matching simulation.
+
+Example Python Simulation:
+<div align="center">
+  <img src="MediumLafayetteFLood/coverage.gif" alt="Medium gif" width="300">
+  <p><i>Medium Lafayette Flood Map Simulation with 5 robots</i></p>
+</div>
