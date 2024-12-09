@@ -9,7 +9,7 @@ This repository contains the implementation of a field-based controller and opti
 
 Find their original implementation of SCoPP [here](https://github.com/adamslab-ub/SCoPP/tree/main)
 
-Our work focuses on leveraging the SCoPP (QLB) algorithm to enable multi-robot teams to efficiently monitor and navigate non-convex areas. The implementation aims to refine the algorithm’s performance and apply it in simulations to evaluate coverage efficiency. We will be analyzing the behavior of this model and seeing how it works with the newly implemented field based controller.
+Our work focuses on leveraging the SCoPP (QLB) algorithm to enable multi-robot teams to efficiently monitor and navigate non-convex areas. The implementation aims to refine the algorithm’s performance and apply it in simulations to evaluate coverage efficiency. We will be analyzing the behavior of this model and seeing how it works with the newly implemented field based controller.You can find our implementation of the improved QLB class in the `monitoring_algorithms.py` under the QLB class.
 
 ### Key Components
 1. **Python Implementation**:

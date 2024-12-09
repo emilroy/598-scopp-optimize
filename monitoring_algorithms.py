@@ -309,6 +309,7 @@ class QLB:
             boundary_polygon = Polygon(self.boundary_points_in_cartesian)
 
         self.total_survey_area = boundary_polygon.area
+        print("Total Survey Area:", self.total_survey_area)
 
         cells = np.zeros((int(x_max / self.cell_size), int(y_max / self.cell_size))) + np.NINF
         cell_squares_within_boundary_x = []
@@ -495,7 +496,7 @@ class QLB:
                 for i in range(len(obstacle)):
                     p1 = obstacle[i]
                     p2 = obstacle[(i+1) % len(obstacle)]
-                    f_rep_segment = self.repulsive_force_segment(robot_pos[:2], p1, p2)
+                    f_rep_segment = self.repulsive_force(robot_pos[:2], p1, p2)
                     f_rep = [a + b for a, b in zip(f_rep, f_rep_segment)]
             
             # Combine forces
@@ -506,23 +507,6 @@ class QLB:
             adjusted_positions.append(new_pos)
         
         return adjusted_positions
-
-    def repulsive_force_segment(self, robot_pos, p1, p2):
-        self.k_rep = 100  # Repulsive force constant
-        self.d0 = 5  # Influence distance of obstacle
-        
-        # Calculate the closest point on the segment to the robot
-        closest_point = self.closest_point_on_segment(robot_pos, p1, p2)
-        
-        dx = robot_pos[0] - closest_point[0]
-        dy = robot_pos[1] - closest_point[1]
-        dist = sqrt(dx**2 + dy**2)
-        
-        if dist <= self.d0:
-            return [self.k_rep * (1/dist - 1/self.d0) * (1/dist**2) * (dx/dist),
-                    self.k_rep * (1/dist - 1/self.d0) * (1/dist**2) * (dy/dist)]
-        else:
-            return [0, 0]
 
     def closest_point_on_segment(self, p, a, b):
         ax, ay = a
@@ -544,16 +528,20 @@ class QLB:
         dist = sqrt(dx**2 + dy**2)
         return [self.k_att * dx / dist, self.k_att * dy / dist]
 
-    def repulsive_force(self, robot_pos, obstacle_pos):
-        """Calculate repulsive force from obstacle"""
-        k_rep = 100  # Repulsive force constant
-        d0 = 5  # Influence distance of obstacle
-        dx = robot_pos[0] - obstacle_pos[0]
-        dy = robot_pos[1] - obstacle_pos[1]
+    def repulsive_force(self, robot_pos, p1, p2):
+        self.k_rep = 100  # Repulsive force constant
+        self.d0 = 5  # Influence distance of obstacle
+        
+        # Calculate the closest point on the segment to the robot
+        closest_point = self.closest_point_on_segment(robot_pos, p1, p2)
+        
+        dx = robot_pos[0] - closest_point[0]
+        dy = robot_pos[1] - closest_point[1]
         dist = sqrt(dx**2 + dy**2)
-        if dist <= d0:
-            return [k_rep * (1/dist - 1/d0) * (1/dist**2) * (dx/dist),
-                    k_rep * (1/dist - 1/d0) * (1/dist**2) * (dy/dist)]
+        
+        if dist <= self.d0:
+            return [self.k_rep * (1/dist - 1/self.d0) * (1/dist**2) * (dx/dist),
+                    self.k_rep * (1/dist - 1/self.d0) * (1/dist**2) * (dy/dist)]
         else:
             return [0, 0]
     
