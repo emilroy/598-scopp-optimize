@@ -7,7 +7,7 @@ import environments as envs
 import os
 
 # Initialize environment class
-environment = envs.SmallLafayetteFLood(1, ["disc","path"]) # change environment here  =========================================
+environment = envs.MediumLafayetteFLood(1) # change environment here  =========================================
 print("Environment:", environment.__class__.__name__)
 
 if not os.path.exists(environment.save_path):
