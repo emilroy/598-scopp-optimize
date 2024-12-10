@@ -43,3 +43,8 @@ Example Python Simulation:
   <img src="MediumLafayetteFLood/coverage.gif" alt="Medium gif" width="300">
   <p><i>Medium Lafayette Flood Map Simulation with 5 robots</i></p>
 </div>
+
+To run the simulation in MATLAB, run `multiRobotCoverageDemo_report.m` file.
+SImulation parameters can be updated in `multiRobotCoverageDemo4()` 
+ <img src="MediumLafayetteFLood/matlabcoverage.gif" alt="Medium gif" width="300">
+  <p><i>Medium Lafayette MATLAB Map Simulation with 6 robots</i></p>
